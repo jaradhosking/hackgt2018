@@ -10,15 +10,14 @@ import java.util.logging.Logger
 
 
 class UploadableFile(context: Context) : Closeable, AutoCloseable {
-    private val tempFile = createTempFile("uploadable-file", null, context.externalCacheDir)
+    val file = createTempFile("uploadable-file", null, context.externalCacheDir)
 
 
+    init {
+        LOG.info("writing temp file to " + file.absolutePath)
+    }
     companion object {
         val LOG = Logger.getLogger(UploadableFile::class.java.name)
-    }
-
-    fun getFile(): File {
-        return tempFile
     }
 
     fun putData(): BlockingQueue<WorkerEvent> {
@@ -36,6 +35,6 @@ class UploadableFile(context: Context) : Closeable, AutoCloseable {
     }
 
     override fun close() {
-        tempFile.delete()
+        file.delete()
     }
 }

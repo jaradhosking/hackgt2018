@@ -7,6 +7,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.wearable.activity.WearableActivity
 import android.widget.TextView
 import java.util.logging.Logger
+import android.content.Intent
+import com.danielkim.soundrecorder.RecordingService
+
 
 class MainActivity : WearableActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
     companion object {
@@ -31,19 +34,7 @@ class MainActivity : WearableActivity(), ActivityCompat.OnRequestPermissionsResu
             requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == 0) {
             LOG.info("Received audio permission!")
-            micRecorder.run {
-                setAudioSource(MediaRecorder.AudioSource.MIC)
-                setOutputFormat(MediaRecorder.OutputFormat.MPEG_2_TS)
-                setAudioEncoder(MediaRecorder.AudioEncoder.VORBIS)
-                setAudioEncodingBitRate(8 * 1000) // 80kbps
-                setAudioSamplingRate(16000)
-            }
-            UploadableFile(this).use { outputFile ->
-                micRecorder.setOutputFile(outputFile.getFile().absolutePath)
-                micRecorder.prepare()
-                micRecorder.start()
-                outputFile.putData()
-            }
+            this.startService(Intent(this, RecordingService::class.java))
         }
     }
 }
