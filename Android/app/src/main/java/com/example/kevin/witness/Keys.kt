@@ -2,7 +2,6 @@ package com.example.kevin.witness
 
 import com.example.kevin.witness.Utils.currentUtcTime8601
 import com.goebl.david.Webb
-import java.net.URL
 
 class AzureParams(connectionString: String) {
     val proto: String
