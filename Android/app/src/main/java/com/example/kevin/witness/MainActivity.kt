@@ -38,11 +38,12 @@ class MainActivity : WearableActivity(), ActivityCompat.OnRequestPermissionsResu
                 setAudioEncodingBitRate(8 * 1000) // 80kbps
                 setAudioSamplingRate(16000)
             }
-            val outputFile = InMemoryFile()
-            micRecorder.setOutputFile(outputFile.getFd())
-            micRecorder.prepare()
-            micRecorder.start()
-            outputFile.putData()
+            UploadableFile(this).use { outputFile ->
+                micRecorder.setOutputFile(outputFile.getFile().absolutePath)
+                micRecorder.prepare()
+                micRecorder.start()
+                outputFile.putData()
+            }
         }
     }
 }
